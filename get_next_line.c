@@ -3,52 +3,97 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogueir <enogueir@student.42madrid>       +#+  +:+       +#+        */
+/*   By: ryner <ryner@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 16:29:53 by enogueir          #+#    #+#             */
-/*   Updated: 2024/10/23 17:45:24 by enogueir         ###   ########.fr       */
+/*   Updated: 2024/10/23 23:29:27 by ryner            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char	*read_keep(int fd, char *buffer, ssize_t bytes_read)
+static char	*read_keep(int fd, char *buffer, ssize_t *bytes_read)
 {
 	char	*buf;
-	char	*newnl;
-	int	nl_pos;
+	char	*temp;
 
 	buf = (char *)malloc(BUFFER_SIZE + 1);
 	if (!buf)
 		return (NULL);
-	bytes_read = read(fd, buf, BUFFER_SIZE);
-	if (bytes_read < 0)
+	*bytes_read = read(fd, buf, BUFFER_SIZE);
+	if (*bytes_read < 0)
 		return(free(buf), NULL);
-	while (bytes_read > 0 && !ft_strchr(buffer, '\n'))
+	while (*bytes_read > 0 && !ft_strchr(buffer, '\n'))
 	{
-		buf[bytes_read] = '\0';
-		buffer = ft_strjoin(buffer, buf);
-		bytes_read = read(fd, buf, BUFFER_SIZE);
+		buf[*bytes_read] = '\0';
+		temp = ft_strjoin(buffer, buf);
+		free(buffer);
+		buffer = temp;
+		*bytes_read = read(fd, buf, BUFFER_SIZE);
 	}
+	free(buf);
 	return (buffer);
 }
 
-static char *get_line(char buffer)
+static char *get_line(char *buffer)
 {
+	char	*pos_nl;
+	char	*line;
+	size_t	len;
 
+	pos_nl = ft_strchr(buffer, '\n');
+	if (pos_nl)
+	{
+		len = (pos_nl + 1) - buffer;
+		line = ft_substr(buffer, 0, len);
+	}
+	else
+	{
+		len = ft_strlen(buffer);
+		line = ft_substr(buffer, 0, len);
+	}
+	return (line);
+}
+static char *update_static(char *buffer)
+{
+	char	*nl_pos;
+	char	*buffer_static;
+	size_t	len;
+
+	if (!buffer)
+		return (NULL);
+	nl_pos = ft_strchr(buffer, '\n');
+	if (nl_pos)
+	{
+		len = ft_strlen(nl_pos + 1);
+		buffer_static = ft_substr(nl_pos + 1, 0, len);
+	}
+	else
+	{
+		free(buffer);
+		buffer_static = NULL;
+	}
+	return (buffer_static);
 }
 
 char	*get_next_line(int fd)
 {
 	static char	*buffer;
-	int			bytes_read;
+	ssize_t		bytes_read;
+	char	*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	buffer = (char *)malloc(BUFFER_SIZE + 1);
+	if(!buffer)	
+		buffer = (char *)malloc(BUFFER_SIZE + 1);
 	if (!buffer)
 		return (NULL);
-	buffer = read_keep(fd, buffer, bytes_read);
+	buffer = read_keep(fd, buffer, &bytes_read);
+	if (!buffer || bytes_read == 0)
+		return (NULL);
+	line = get_line(buffer);
+	buffer = update_static(buffer);
+	return (line);
 }
 
 int	main(void)
@@ -56,7 +101,7 @@ int	main(void)
 	int		fd;
 	char	*line;
 
-	fd = open("archivo.txt", O_RDONLY);
+	fd = open("text", O_RDONLY);
 	if (fd == -1)
 	{
 		perror("Error al abrir el archivo");
