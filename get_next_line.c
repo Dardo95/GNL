@@ -6,7 +6,7 @@
 /*   By: ryner <ryner@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 16:29:53 by enogueir          #+#    #+#             */
-/*   Updated: 2024/10/23 23:29:27 by ryner            ###   ########.fr       */
+/*   Updated: 2024/10/24 14:37:49 by ryner            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,12 @@ static char	*read_keep(int fd, char *buffer, ssize_t *bytes_read)
 	{
 		buf[*bytes_read] = '\0';
 		temp = ft_strjoin(buffer, buf);
+		if (!temp)
+		{
+			free(buf);
+			free(buffer);
+			return (NULL);
+		}
 		free(buffer);
 		buffer = temp;
 		*bytes_read = read(fd, buf, BUFFER_SIZE);
@@ -34,6 +40,7 @@ static char	*read_keep(int fd, char *buffer, ssize_t *bytes_read)
 	free(buf);
 	return (buffer);
 }
+
 
 static char *get_line(char *buffer)
 {
@@ -58,15 +65,14 @@ static char *update_static(char *buffer)
 {
 	char	*nl_pos;
 	char	*buffer_static;
-	size_t	len;
 
 	if (!buffer)
 		return (NULL);
 	nl_pos = ft_strchr(buffer, '\n');
 	if (nl_pos)
 	{
-		len = ft_strlen(nl_pos + 1);
-		buffer_static = ft_substr(nl_pos + 1, 0, len);
+		buffer_static = ft_strdup(nl_pos + 1);
+		free(buffer);
 	}
 	else
 	{
@@ -84,13 +90,21 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	if(!buffer)	
+	if(!buffer)
+	{
 		buffer = (char *)malloc(BUFFER_SIZE + 1);
-	if (!buffer)
-		return (NULL);
+		if (!buffer)
+			return (NULL);
+		buffer[0] = '\0';
+	}
 	buffer = read_keep(fd, buffer, &bytes_read);
-	if (!buffer || bytes_read == 0)
+	printf("ggggggggggggggggg%s\n\n",buffer);
+	if (!buffer || (bytes_read == 0 && !*buffer))
+	{
+		free(buffer);
+		buffer = NULL;
 		return (NULL);
+	}
 	line = get_line(buffer);
 	buffer = update_static(buffer);
 	return (line);
@@ -101,7 +115,7 @@ int	main(void)
 	int		fd;
 	char	*line;
 
-	fd = open("text", O_RDONLY);
+	fd = open("text2s", O_RDONLY);
 	if (fd == -1)
 	{
 		perror("Error al abrir el archivo");
