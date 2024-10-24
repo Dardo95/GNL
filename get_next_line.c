@@ -6,7 +6,7 @@
 /*   By: enogueir <enogueir@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 16:29:53 by enogueir          #+#    #+#             */
-/*   Updated: 2024/10/24 17:41:14 by enogueir         ###   ########.fr       */
+/*   Updated: 2024/10/24 17:45:30 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static char	*read_keep(int fd, char *buffer, ssize_t *bytes_read)
 		return (NULL);
 	*bytes_read = 1;
 	if (*bytes_read < 0)
-		return(free(buf), NULL);
+		return (free(buf), NULL);
 	while (*bytes_read > 0 && !ft_strchr(buffer, '\n'))
 	{
 		*bytes_read = read(fd, buf, BUFFER_SIZE);
@@ -41,8 +41,7 @@ static char	*read_keep(int fd, char *buffer, ssize_t *bytes_read)
 	return (buffer);
 }
 
-
-static char *get_line(char *buffer)
+static char	*get_line(char *buffer)
 {
 	char	*pos_nl;
 	char	*line;
@@ -61,7 +60,7 @@ static char *get_line(char *buffer)
 	}
 	return (line);
 }
-static char *update_static(char *buffer)
+static char	*update_static(char *buffer)
 {
 	char	*nl_pos;
 	char	*buffer_static;
@@ -87,16 +86,16 @@ char	*get_next_line(int fd)
 {
 	static char	*buffer;
 	ssize_t		bytes_read;
-	char	*line;
+	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	if(!buffer)
+	if (!buffer)
 	{
 		buffer = (char *)malloc(BUFFER_SIZE + 1);
 		if (!buffer)
 			return (NULL);
-		 buffer[0] = '\0';
+		buffer[0] = '\0';
 	}
 	buffer = read_keep(fd, buffer, &bytes_read);
 	if (!buffer || (bytes_read == 0 && !*buffer))

@@ -6,7 +6,7 @@
 /*   By: enogueir <enogueir@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 16:29:53 by enogueir          #+#    #+#             */
-/*   Updated: 2024/10/24 17:40:55 by enogueir         ###   ########.fr       */
+/*   Updated: 2024/10/24 17:45:14 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static char	*read_keep(int fd, char *buffer, ssize_t *bytes_read)
 		return (NULL);
 	*bytes_read = 1;
 	if (*bytes_read < 0)
-		return(free(buf), NULL);
+		return (free(buf), NULL);
 	while (*bytes_read > 0 && !ft_strchr(buffer, '\n'))
 	{
 		*bytes_read = read(fd, buf, BUFFER_SIZE);
@@ -41,8 +41,7 @@ static char	*read_keep(int fd, char *buffer, ssize_t *bytes_read)
 	return (buffer);
 }
 
-
-static char *get_line(char *buffer)
+static char	*get_line(char *buffer)
 {
 	char	*pos_nl;
 	char	*line;
@@ -61,7 +60,7 @@ static char *get_line(char *buffer)
 	}
 	return (line);
 }
-static char *update_static(char *buffer)
+static char	*update_static(char *buffer)
 {
 	char	*nl_pos;
 	char	*buffer_static;
@@ -87,11 +86,11 @@ char	*get_next_line(int fd)
 {
 	static char	*buffer[MAX_FD];
 	ssize_t		bytes_read;
-	char	*line;
+	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	if(!buffer[fd])
+	if (!buffer[fd])
 	{
 		buffer[fd] = (char *)malloc(BUFFER_SIZE + 1);
 		if (!buffer[fd])
@@ -111,30 +110,30 @@ char	*get_next_line(int fd)
 }
 
 /* int main() {
-    int fd1 = open("text", O_RDONLY);
-    int fd2 = open("text2.txt", O_RDONLY); 
-    
-    if (fd1 < 0 || fd2 < 0) {
-        perror("Error opening files");
-        return 1;
-    }
-    char *line1 = get_next_line(fd1);
-    char *line2 = get_next_line(fd2);
-    while ((line1) != NULL || (line2) != NULL) 
-    {
-        if (line1) {
-            printf("FD1: %s", line1);
-            free(line1);
-        }
-        if (line2) {
-            printf("FD2: %s", line2);
-            free(line2);
-        }
-        line1 = get_next_line(fd1);
-        line2 = get_next_line(fd2);
-    }
+	int fd1 = open("text", O_RDONLY);
+	int fd2 = open("text2.txt", O_RDONLY);
 
-    close(fd1);
-    close(fd2);
-    return 0;
+	if (fd1 < 0 || fd2 < 0) {
+		perror("Error opening files");
+		return (1);
+	}
+	char *line1 = get_next_line(fd1);
+	char *line2 = get_next_line(fd2);
+	while ((line1) != NULL || (line2) != NULL)
+	{
+		if (line1) {
+			printf("FD1: %s", line1);
+			free(line1);
+		}
+		if (line2) {
+			printf("FD2: %s", line2);
+			free(line2);
+		}
+		line1 = get_next_line(fd1);
+		line2 = get_next_line(fd2);
+	}
+
+	close(fd1);
+	close(fd2);
+	return (0);
 } */
