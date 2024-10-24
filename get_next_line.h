@@ -6,7 +6,7 @@
 /*   By: enogueir <enogueir@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 16:24:30 by enogueir          #+#    #+#             */
-/*   Updated: 2024/10/24 16:49:09 by enogueir         ###   ########.fr       */
+/*   Updated: 2024/10/24 17:41:28 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdlib.h>
-#include <stdio.h>
+//#include <stdio.h>
 
 #ifndef BUFFER_SIZE
 # define BUFFER_SIZE 42

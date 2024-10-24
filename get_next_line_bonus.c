@@ -6,7 +6,7 @@
 /*   By: enogueir <enogueir@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 16:29:53 by enogueir          #+#    #+#             */
-/*   Updated: 2024/10/24 17:19:01 by enogueir         ###   ########.fr       */
+/*   Updated: 2024/10/24 17:40:55 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-int main() {
+/* int main() {
     int fd1 = open("text", O_RDONLY);
     int fd2 = open("text2.txt", O_RDONLY); 
     
@@ -137,4 +137,4 @@ int main() {
     close(fd1);
     close(fd2);
     return 0;
-}
+} */
