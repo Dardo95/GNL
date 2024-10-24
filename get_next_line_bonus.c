@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: enogueir <enogueir@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 16:29:53 by enogueir          #+#    #+#             */
-/*   Updated: 2024/10/24 17:19:59 by enogueir         ###   ########.fr       */
+/*   Updated: 2024/10/24 17:19:01 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static char	*read_keep(int fd, char *buffer, ssize_t *bytes_read)
 {
@@ -85,47 +85,56 @@ static char *update_static(char *buffer)
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer;
+	static char	*buffer[MAX_FD];
 	ssize_t		bytes_read;
 	char	*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	if(!buffer)
+	if(!buffer[fd])
 	{
-		buffer = (char *)malloc(BUFFER_SIZE + 1);
-		if (!buffer)
+		buffer[fd] = (char *)malloc(BUFFER_SIZE + 1);
+		if (!buffer[fd])
 			return (NULL);
-		 buffer[0] = '\0';
+		buffer[fd][0] = '\0';
 	}
-	buffer = read_keep(fd, buffer, &bytes_read);
-	if (!buffer || (bytes_read == 0 && !*buffer))
+	buffer[fd] = read_keep(fd, buffer[fd], &bytes_read);
+	if (!buffer[fd] || (bytes_read == 0 && !*buffer[fd]))
 	{
-		free(buffer);
-		buffer = NULL;
+		free(buffer[fd]);
+		buffer[fd] = NULL;
 		return (NULL);
 	}
-	line = get_line(buffer);
-	buffer = update_static(buffer);
+	line = get_line(buffer[fd]);
+	buffer[fd] = update_static(buffer[fd]);
 	return (line);
 }
 
-int	main(void)
-{
-	int		fd;
-	char	*line;
+int main() {
+    int fd1 = open("text", O_RDONLY);
+    int fd2 = open("text2.txt", O_RDONLY); 
+    
+    if (fd1 < 0 || fd2 < 0) {
+        perror("Error opening files");
+        return 1;
+    }
+    char *line1 = get_next_line(fd1);
+    char *line2 = get_next_line(fd2);
+    while ((line1) != NULL || (line2) != NULL) 
+    {
+        if (line1) {
+            printf("FD1: %s", line1);
+            free(line1);
+        }
+        if (line2) {
+            printf("FD2: %s", line2);
+            free(line2);
+        }
+        line1 = get_next_line(fd1);
+        line2 = get_next_line(fd2);
+    }
 
-	fd = open("text2.txt", O_RDONLY);
-	if (fd == -1)
-	{
-		perror("Error al abrir el archivo");
-		return (1);
-	}
-	while ((line = get_next_line(fd)) != NULL)
-	{
-		printf("%s", line);
-		free(line);
-	}
-	close(fd);
-	return (0);
+    close(fd1);
+    close(fd2);
+    return 0;
 }
