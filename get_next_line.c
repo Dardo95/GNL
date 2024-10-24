@@ -6,7 +6,7 @@
 /*   By: enogueir <enogueir@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 16:29:53 by enogueir          #+#    #+#             */
-/*   Updated: 2024/10/24 17:45:30 by enogueir         ###   ########.fr       */
+/*   Updated: 2024/10/24 17:48:17 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ static char	*get_line(char *buffer)
 	}
 	return (line);
 }
+
 static char	*update_static(char *buffer)
 {
 	char	*nl_pos;

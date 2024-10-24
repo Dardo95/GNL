@@ -6,7 +6,7 @@
 /*   By: enogueir <enogueir@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 11:27:05 by enogueir          #+#    #+#             */
-/*   Updated: 2024/10/24 17:45:27 by enogueir         ###   ########.fr       */
+/*   Updated: 2024/10/24 17:48:50 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,10 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	size_t len;
-	char *ptr;
-	size_t i;
-	size_t j;
+	size_t	len;
+	char	*ptr;
+	size_t	i;
+	size_t	j;
 
 	if (!s1 || !s2)
 		return (NULL);
