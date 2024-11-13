@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ryner <ryner@student.42.fr>                +#+  +:+       +#+        */
+/*   By: enogueir <enogueir@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 16:29:53 by enogueir          #+#    #+#             */
-/*   Updated: 2024/11/13 14:32:56 by ryner            ###   ########.fr       */
+/*   Updated: 2024/11/13 16:02:54 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,7 @@ static char	*read_keep(int fd, char *buffer, ssize_t *bytes_read)
 		buf[*bytes_read] = '\0';
 		temp = ft_strjoin(buffer, buf);
 		if (!temp)
-		{
-			free(buf);
-			free(buffer);
-			return (NULL);
-		}
+			return (free(buf),free(buffer), NULL);
 		free(buffer);
 		buffer = temp;
 	}
@@ -57,9 +53,10 @@ static char	*get_line(char *buffer)
 	}
 	else
 	{
-		len = ft_strlen((buffer) + 1);
-		line = ft_substr(buffer, 0, len);
+		line = ft_strdup(buffer); 
 	}
+	if (!line)
+		return(NULL);
 	return (line);
 }
 
