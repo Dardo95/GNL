@@ -6,7 +6,7 @@
 /*   By: ryner <ryner@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 16:29:53 by enogueir          #+#    #+#             */
-/*   Updated: 2024/11/13 13:33:59 by ryner            ###   ########.fr       */
+/*   Updated: 2024/11/13 14:32:56 by ryner            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ static char	*get_line(char *buffer)
 	char	*line;
 	size_t	len;
 
+	if (!buffer || !*buffer)
+		return (NULL);
 	pos_nl = ft_strchr(buffer, '\n');
 	if (pos_nl)
 	{
@@ -67,8 +69,11 @@ static char	*update_static(char *buffer)
 	char	*buffer_static;
 	size_t	len;
 
-	if (!buffer)
+	if (!buffer || !*buffer)
+	{
+		free(buffer);
 		return (NULL);
+	}
 	nl_pos = ft_strchr(buffer, '\n');
 	if (nl_pos)
 	{
@@ -106,6 +111,8 @@ char	*get_next_line(int fd)
 		return (NULL);
 	}
 	line = get_line(buffer[fd]);
+	if (!buffer[fd] || (bytes_read == 0 && !*buffer[fd]))
+    	return (free(buffer[fd]), buffer[fd] = NULL, NULL);
 	buffer[fd] = update_static(buffer[fd]);
 	return (line);
 }

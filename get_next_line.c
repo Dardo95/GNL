@@ -6,7 +6,7 @@
 /*   By: ryner <ryner@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 16:29:53 by enogueir          #+#    #+#             */
-/*   Updated: 2024/11/13 13:33:05 by ryner            ###   ########.fr       */
+/*   Updated: 2024/11/13 15:06:38 by ryner            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,11 @@ static char	*read_keep(int fd, char *buffer, ssize_t *bytes_read)
 	{
 		*bytes_read = read(fd, buf, BUFFER_SIZE);
 		if (*bytes_read < 0)
-			return (free(buf), NULL);
+			return (free(buf),free(buffer), NULL);
 		buf[*bytes_read] = '\0';
 		temp = ft_strjoin(buffer, buf);
 		if (!temp)
-		{
-			free(buf);
-			free(buffer);
-			return (NULL);
-		}
+			return (free(buf),free(buffer), NULL);
 		free(buffer);
 		buffer = temp;
 	}
@@ -47,6 +43,8 @@ static char	*get_line(char *buffer)
 	char	*line;
 	size_t	len;
 
+	if (!buffer || !*buffer)
+		return (NULL);
 	pos_nl = ft_strchr(buffer, '\n');
 	if (pos_nl)
 	{
@@ -55,9 +53,10 @@ static char	*get_line(char *buffer)
 	}
 	else
 	{
-		len = ft_strlen((buffer) + 1);
-		line = ft_substr(buffer, 0, len);
+		line = ft_strdup(buffer); 
 	}
+	if (!line)
+		return(NULL);
 	return (line);
 }
 
@@ -67,8 +66,11 @@ static char	*update_static(char *buffer)
 	char	*buffer_static;
 	size_t	len;
 
-	if (!buffer)
+	if (!buffer || !*buffer)
+	{
+		free(buffer);
 		return (NULL);
+	}
 	nl_pos = ft_strchr(buffer, '\n');
 	if (nl_pos)
 	{
@@ -106,16 +108,18 @@ char	*get_next_line(int fd)
 		return (NULL);
 	}
 	line = get_line(buffer);
+	if (!buffer || (bytes_read == 0 && !*buffer))
+    	return (free(buffer), buffer = NULL, NULL);
 	buffer = update_static(buffer);
 	return (line);
 }
-
-/* int	main(void)
+/* #include <stdio.h>
+int	main(void)
 {
 	int		fd;
 	char	*line;
 
-	fd = open("text2.txt", O_RDONLY);
+	fd = 42;
 	if (fd == -1)
 	{
 		perror("Error al abrir el archivo");
@@ -128,4 +132,5 @@ char	*get_next_line(int fd)
 	}
 	close(fd);
 	return (0);
-} */
+}*/
+ 
