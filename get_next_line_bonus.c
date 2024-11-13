@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogueir <enogueir@student.42madrid>       +#+  +:+       +#+        */
+/*   By: ryner <ryner@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 16:29:53 by enogueir          #+#    #+#             */
-/*   Updated: 2024/11/13 16:02:54 by enogueir         ###   ########.fr       */
+/*   Updated: 2024/11/13 16:15:03 by ryner            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ static char	*read_keep(int fd, char *buffer, ssize_t *bytes_read)
 	{
 		*bytes_read = read(fd, buf, BUFFER_SIZE);
 		if (*bytes_read < 0)
-			return (free(buf), NULL);
+			return (free(buf), free(buffer), NULL);
 		buf[*bytes_read] = '\0';
 		temp = ft_strjoin(buffer, buf);
 		if (!temp)
-			return (free(buf),free(buffer), NULL);
+			return (free(buf), free(buffer), NULL);
 		free(buffer);
 		buffer = temp;
 	}
@@ -53,10 +53,10 @@ static char	*get_line(char *buffer)
 	}
 	else
 	{
-		line = ft_strdup(buffer); 
+		line = ft_strdup(buffer);
 	}
 	if (!line)
-		return(NULL);
+		return (NULL);
 	return (line);
 }
 
@@ -109,7 +109,7 @@ char	*get_next_line(int fd)
 	}
 	line = get_line(buffer[fd]);
 	if (!buffer[fd] || (bytes_read == 0 && !*buffer[fd]))
-    	return (free(buffer[fd]), buffer[fd] = NULL, NULL);
+		return (free(buffer[fd]), buffer[fd] = NULL, NULL);
 	buffer[fd] = update_static(buffer[fd]);
 	return (line);
 }

@@ -6,7 +6,7 @@
 /*   By: ryner <ryner@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 16:29:53 by enogueir          #+#    #+#             */
-/*   Updated: 2024/11/13 15:06:38 by ryner            ###   ########.fr       */
+/*   Updated: 2024/11/13 16:09:29 by ryner            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ static char	*read_keep(int fd, char *buffer, ssize_t *bytes_read)
 	{
 		*bytes_read = read(fd, buf, BUFFER_SIZE);
 		if (*bytes_read < 0)
-			return (free(buf),free(buffer), NULL);
+			return (free(buf), free(buffer), NULL);
 		buf[*bytes_read] = '\0';
 		temp = ft_strjoin(buffer, buf);
 		if (!temp)
-			return (free(buf),free(buffer), NULL);
+			return (free(buf), free(buffer), NULL);
 		free(buffer);
 		buffer = temp;
 	}
@@ -53,10 +53,10 @@ static char	*get_line(char *buffer)
 	}
 	else
 	{
-		line = ft_strdup(buffer); 
+		line = ft_strdup(buffer);
 	}
 	if (!line)
-		return(NULL);
+		return (NULL);
 	return (line);
 }
 
@@ -109,7 +109,7 @@ char	*get_next_line(int fd)
 	}
 	line = get_line(buffer);
 	if (!buffer || (bytes_read == 0 && !*buffer))
-    	return (free(buffer), buffer = NULL, NULL);
+		return (free(buffer), buffer = NULL, NULL);
 	buffer = update_static(buffer);
 	return (line);
 }
@@ -133,4 +133,3 @@ int	main(void)
 	close(fd);
 	return (0);
 }*/
- 
