@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogueir <enogueir@student.42madrid>       +#+  +:+       +#+        */
+/*   By: ryner <ryner@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 16:29:53 by enogueir          #+#    #+#             */
-/*   Updated: 2024/10/24 17:48:17 by enogueir         ###   ########.fr       */
+/*   Updated: 2024/11/13 13:33:05 by ryner            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ static char	*read_keep(int fd, char *buffer, ssize_t *bytes_read)
 	if (!buf)
 		return (NULL);
 	*bytes_read = 1;
-	if (*bytes_read < 0)
-		return (free(buf), NULL);
 	while (*bytes_read > 0 && !ft_strchr(buffer, '\n'))
 	{
 		*bytes_read = read(fd, buf, BUFFER_SIZE);
+		if (*bytes_read < 0)
+			return (free(buf), NULL);
 		buf[*bytes_read] = '\0';
 		temp = ft_strjoin(buffer, buf);
 		if (!temp)
