@@ -6,7 +6,7 @@
 /*   By: ryner <ryner@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 16:29:53 by enogueir          #+#    #+#             */
-/*   Updated: 2024/11/13 16:15:03 by ryner            ###   ########.fr       */
+/*   Updated: 2024/11/14 11:05:39 by ryner            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,14 +108,12 @@ char	*get_next_line(int fd)
 		return (NULL);
 	}
 	line = get_line(buffer[fd]);
-	if (!buffer[fd] || (bytes_read == 0 && !*buffer[fd]))
-		return (free(buffer[fd]), buffer[fd] = NULL, NULL);
 	buffer[fd] = update_static(buffer[fd]);
 	return (line);
 }
 
 /* int main() {
-	int fd1 = open("text", O_RDONLY);
+	int fd1 = open("empty.txt", O_RDONLY);
 	int fd2 = open("text2.txt", O_RDONLY);
 
 	if (fd1 < 0 || fd2 < 0) {

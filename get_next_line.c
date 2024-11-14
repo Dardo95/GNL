@@ -6,7 +6,7 @@
 /*   By: ryner <ryner@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 16:29:53 by enogueir          #+#    #+#             */
-/*   Updated: 2024/11/13 16:09:29 by ryner            ###   ########.fr       */
+/*   Updated: 2024/11/13 18:04:06 by ryner            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,8 +108,6 @@ char	*get_next_line(int fd)
 		return (NULL);
 	}
 	line = get_line(buffer);
-	if (!buffer || (bytes_read == 0 && !*buffer))
-		return (free(buffer), buffer = NULL, NULL);
 	buffer = update_static(buffer);
 	return (line);
 }
